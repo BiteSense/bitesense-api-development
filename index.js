@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./src/configs/dbConfig.js");
 const route = require("./src/routes/user-route/user_route");
+const bodyParser = require("body-parser");
 const env = require("dotenv");
 const port = 3000;
 
@@ -15,6 +16,10 @@ try {
   console.log(error);
 }
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Handling route
 app.use("/api/user", route);
 
 app.listen(port, () => {
