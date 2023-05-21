@@ -1,10 +1,8 @@
-const mysql = require("mysql");
+const { Sequelize } = require("sequelize");
 
-const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: "root",
-  password: "",
-  database: process.env.DATABASE,
+const db = new Sequelize("production_bitesense", "root", "", {
+  host: "localhost",
+  dialect: "mysql",
 });
 
 module.exports = db;
