@@ -15,7 +15,6 @@ const handlerRegister = async (req, res) => {
   //Checking Already email
   const emailExicst = `SELECT email from users WHERE email = '${email}'`;
   const exicst = await db.query(emailExicst);
-  console.log(exicst[0][0]);
   if (exicst[0][0]) {
     return res.json({
       status: "error",
@@ -48,7 +47,6 @@ const handlerLogin = async (req, res) => {
     // Check Email
     const emailExicst = `SELECT * FROM users WHERE email = '${email}'`;
     const exisct = await db.query(emailExicst);
-    console.log(exisct[0][0].password);
     // Checking data in database which given by email parser from body
     if (!exisct[0][0]) {
       return res.json({
@@ -77,10 +75,35 @@ const handlerLogin = async (req, res) => {
         status: "error",
       });
     }
+    res.cookie("token", token);
 
+    res.send(token);
+  } catch (error) {
     return res.json({
-      token,
+      status: "error",
+      message: error,
     });
+  }
+};
+
+const handlerLogout = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token)
+      return res.status(204).json({
+        status: "error",
+        message: "Unauthorize",
+      });
+
+    const sql = `SELECT token FROM users WHERE token = '${token}'`;
+    const result = await db.query(sql);
+    console.log(result);
+
+    if (!result)
+      return res.status(204).json({
+        status: "error",
+        message: "Unauthorize",
+      });
   } catch (error) {
     return res.json({
       status: "error",
@@ -92,4 +115,5 @@ const handlerLogin = async (req, res) => {
 module.exports = {
   handlerRegister,
   handlerLogin,
+  handlerLogout,
 };
