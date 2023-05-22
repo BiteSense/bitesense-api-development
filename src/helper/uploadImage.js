@@ -6,7 +6,7 @@ const bucket = googlCloud.bucket(bucketName);
 
 const { format } = util;
 
-const uploadImage = (file) => {
+const uploadImage = (file) =>
   new Promise((resolve, reject) => {
     const { originalname, buffer } = file;
     const blob = bucket.file(originalname.replace(/ /g, "_"));
@@ -20,10 +20,9 @@ const uploadImage = (file) => {
         resolve(publicUrl);
       })
       .on("error", () => {
-        reject("Failed Upload Image");
+        reject("Failed to upload image, something wrong");
       })
       .end(buffer);
   });
-};
 
 module.exports = uploadImage;

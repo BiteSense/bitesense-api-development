@@ -1,4 +1,5 @@
 const db = require("../../configs/dbConfig");
+const uploadImage = require("../../helper/uploadImage.js");
 
 const updateEmail = async (req, res) => {
   const { email } = req.body;
@@ -93,10 +94,32 @@ const updateUsername = async (req, res) => {
     });
   }
 };
-const updateProfile = async (req, res) => {};
+const updateProfile = async (req, res, next) => {
+  const id_user = req.cookies.id_user;
+  try {
+    const file = req.file;
+    file.originalname = `${Date.now()}${file.originalname}`;
+    const publicUrl = await uploadImage(file);
+    sql = `UPDATE users SET foto_user = '${publicUrl}' WHERE id_user = '${id_user}'`;
+    const result = await db.query(sql);
+    if (!result)
+      return res.json({
+        status: "error",
+        message: "error update image profile",
+      });
+    res.status(200).json({
+      status: "success",
+      message: "success upload image",
+      data: publicUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   updateEmail,
   updateTelepon,
   updateUsername,
+  updateProfile,
 };

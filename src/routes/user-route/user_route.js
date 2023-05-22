@@ -10,6 +10,7 @@ route.delete("/logout", verifyToken, myModule.handlerLogout);
 route.post("/profile/email", updateModule.updateEmail);
 route.post("/profile/telepon", updateModule.updateTelepon);
 route.post("/profile/username", updateModule.updateUsername);
+route.post("/profile/upload", updateModule.updateProfile);
 route.get("/testing", verifyToken, (req, res) => {
   res.send("look at me");
 });
