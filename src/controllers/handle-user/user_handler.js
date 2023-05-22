@@ -77,7 +77,7 @@ const handlerLogin = async (req, res) => {
     }
     res.cookie("token", token);
 
-    res.send(token);
+    res.send({ token });
   } catch (error) {
     return res.json({
       status: "error",
@@ -97,13 +97,27 @@ const handlerLogout = async (req, res) => {
 
     const sql = `SELECT token FROM users WHERE token = '${token}'`;
     const result = await db.query(sql);
-    console.log(result);
 
-    if (!result)
+    const data = result[0][0];
+    if (!data)
       return res.status(204).json({
         status: "error",
         message: "Unauthorize",
       });
+
+    const sql1 = `UPDATE users SET token = NULL WHERE id_user = '${data.token}'`;
+    const result1 = await db.query(sql1);
+
+    if (result1[0][0])
+      return res.json({
+        status: "error",
+        message: "Gagal Logout",
+      });
+
+    res.clearCookie("token").json({
+      status: "success",
+      message: "Logout berhasil",
+    });
   } catch (error) {
     return res.json({
       status: "error",
