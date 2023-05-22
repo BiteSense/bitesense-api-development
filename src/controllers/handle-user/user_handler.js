@@ -76,6 +76,7 @@ const handlerLogin = async (req, res) => {
       });
     }
     res.cookie("token", token);
+    res.cookie("id_user", userid);
 
     res.send({ token });
   } catch (error) {
@@ -105,7 +106,7 @@ const handlerLogout = async (req, res) => {
         message: "Unauthorize",
       });
 
-    const sql1 = `UPDATE users SET token = NULL WHERE id_user = '${data.token}'`;
+    const sql1 = `UPDATE users SET token = NULL WHERE id_user = '${data.id_user}'`;
     const result1 = await db.query(sql1);
 
     if (result1[0][0])
@@ -113,6 +114,8 @@ const handlerLogout = async (req, res) => {
         status: "error",
         message: "Gagal Logout",
       });
+
+    res.clearCookie("id_user");
 
     res.clearCookie("token").json({
       status: "success",
