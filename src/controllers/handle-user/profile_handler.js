@@ -116,10 +116,31 @@ const updateProfile = async (req, res, next) => {
     next(error);
   }
 };
+const deleteProfile = async (req, res, next) => {
+  const id_user = req.cookies.id_user;
+  try {
+    const defaultProfile = "https://storage.googleapis.com/staging_product/default-profile.jpg";
+    const sql = `UPDATE users SET foto_user = '${defaultProfile}' WHERE id_user = '${id_user}'`;
+    const result = await db.query(sql);
+    if (!result)
+      return res.json({
+        status: "error",
+        message: "Delete profile gagal",
+      });
+
+    return res.status(200).json({
+      status: "success",
+      message: "succes delete profile",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   updateEmail,
   updateTelepon,
   updateUsername,
   updateProfile,
+  deleteProfile,
 };
