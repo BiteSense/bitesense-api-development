@@ -26,7 +26,7 @@ route.post("/upload", verifyToken, uploadModule);
 // Category Penyakit
 route.post("/preference/penyakit", verifyToken, preferenceModule.insertPenyakit);
 // Category Food Intolarance
-route.post("/preference/food", verifyToken, preferenceModule.insertFood);
+route.post("/preference/makanan", verifyToken, preferenceModule.insertFood);
 // Category Condition
 route.post("/preference/kondisi", verifyToken, preferenceModule.insertCondition);
 

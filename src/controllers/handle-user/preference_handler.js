@@ -5,14 +5,15 @@ const insertPenyakit = async (req, res) => {
   try {
     const { penyakit } = req.body;
     sql = `INSERT INTO user_penyakit (id_user , id_penyakit) VALUES ('${id_user}','${penyakit}')`;
-    const result = db.query(sql);
+    const result = await db.query(sql);
+    console.log(result);
     if (!result)
       return res.json({
         status: "error",
         message: "failed input data",
       });
 
-    return res.status.json({
+    return res.status(200).json({
       status: "success",
       message: "success input data",
     });
@@ -26,16 +27,16 @@ const insertPenyakit = async (req, res) => {
 const insertFood = async (req, res) => {
   const id_user = req.cookies.id_user;
   try {
-    const { food } = req.body;
-    sql = `INSERT INTO user_food (id_user , id_food) VALUES ('${id_user}','${food}')`;
-    const result = db.query(sql);
+    const { makanan } = req.body;
+    sql = `INSERT INTO user_food (id_user , id_food) VALUES ('${id_user}','${makanan}')`;
+    const result = await db.query(sql);
     if (!result)
       return res.json({
         status: "error",
         message: "failed input data",
       });
 
-    return res.status.json({
+    return res.status(200).json({
       status: "success",
       message: "success input data",
     });
@@ -51,14 +52,14 @@ const insertCondition = async (req, res) => {
   try {
     const { kondisi } = req.body;
     sql = `INSERT INTO user_condition (id_user , id_condition) VALUES ('${id_user}','${kondisi}')`;
-    const result = db.query(sql);
+    const result = await db.query(sql);
     if (!result)
       return res.json({
         status: "error",
         message: "failed input data",
       });
 
-    return res.status.json({
+    return res.status(200).json({
       status: "success",
       message: "success input data",
     });
