@@ -1,6 +1,29 @@
 const db = require("../../configs/dbConfig");
 const uploadImage = require("../../helper/uploadImage.js");
 
+const getDataProfile = async (req, res) => {
+  const idUser = req.cookies.id_user;
+  try {
+    const sql = `SELECT u.username , u.email , u.no_telepon , u.foto_user FROM users AS u WHERE id_user = '${idUser}'`;
+    const result = await db.query(sql);
+    if (!result)
+      return res.json({
+        status: "error",
+        message: "get data failed",
+      });
+
+    return res.status(200).json({
+      status: "success",
+      message: "get data success",
+      data: result[0][0],
+    });
+  } catch (error) {
+    return res.json({
+      status: "error",
+      message: error,
+    });
+  }
+};
 const updateEmail = async (req, res) => {
   const { email } = req.body;
   const id_user = req.cookies.id_user;
@@ -143,4 +166,5 @@ module.exports = {
   updateUsername,
   updateProfile,
   deleteProfile,
+  getDataProfile,
 };

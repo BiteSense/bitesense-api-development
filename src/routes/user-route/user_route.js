@@ -11,6 +11,7 @@ route.post("/login", myModule.handlerLogin);
 route.delete("/logout", verifyToken, myModule.handlerLogout);
 
 // Profile Routes
+route.get("/profile", verifyToken, updateModule.getDataProfile);
 route.post("/profile/email", verifyToken, updateModule.updateEmail);
 route.post("/profile/telepon", verifyToken, updateModule.updateTelepon);
 route.post("/profile/username", verifyToken, updateModule.updateUsername);
