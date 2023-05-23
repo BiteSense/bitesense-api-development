@@ -1,17 +1,29 @@
 const db = require("../../configs/dbConfig.js");
+const Sequelize = require("sequelize");
+// const convertToArray = require("../../helper/convertToArray.js");
 
 const getPreference = async (req, res) => {
   const idUser = req.cookies.id_user;
   try {
     const sql = `
-    SELECT u.username , u.no_telepon, u.email, u.foto_user , p.nama_penyakit,p.triger_penyakit FROM users AS u 
+    SELECT p.nama_penyakit FROM users AS u 
     JOIN user_penyakit AS up ON u.id_user = up.id_user
     JOIN penyakit AS p ON up.id_penyakit = p.id_penyakit
+    JOIN user_food AS uf ON u.id_user = uf.id_user
+    JOIN food AS f ON uf.id_food = f.id_food
+    JOIN user_condition AS uc ON u.id_user = uc.id_user
+    JOIN kondisi c ON uc.id_condition = c.id_condition
     WHERE u.id_user = '${idUser}'
     `;
-
-    const result = await db.query(sql);
-    return res.json(result[0][0]);
+    await db.query(sql, { type: Sequelize.QueryTypes.SELECT }).then((result) => {
+      return res.status(200).json({
+        status: "success",
+        message: "success getAll preference",
+        data: {
+          result,
+        },
+      });
+    });
   } catch (error) {
     return res.json({
       status: "error",
