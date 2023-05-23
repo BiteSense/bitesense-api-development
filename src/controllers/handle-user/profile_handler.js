@@ -98,7 +98,7 @@ const updateProfile = async (req, res, next) => {
   const id_user = req.cookies.id_user;
   try {
     const file = req.file;
-    file.originalname = `${Date.now()}${file.originalname}`;
+    file.originalname = `${Date.now()}${id_user}${file.originalname}`;
     const publicUrl = await uploadImage(file);
     sql = `UPDATE users SET foto_user = '${publicUrl}' WHERE id_user = '${id_user}'`;
     const result = await db.query(sql);

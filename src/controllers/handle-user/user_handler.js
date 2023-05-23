@@ -86,7 +86,6 @@ const handlerLogin = async (req, res) => {
     });
   }
 };
-
 const handlerLogout = async (req, res) => {
   try {
     const token = req.cookies.token;
