@@ -4,6 +4,7 @@ const verifyToken = require("../../middleware/verifyToken");
 const myModule = require("../../controllers/handle-user/user_handler.js");
 const updateModule = require("../../controllers/handle-user/profile_handler.js");
 const uploadModule = require("../../controllers/handle-user/upload_handler.js");
+const preferenceModule = require("../../controllers/handle-user/preference_handler.js");
 
 // User Routes
 route.post("/register", myModule.handlerRegister);
@@ -20,5 +21,13 @@ route.delete("/profile/delete", verifyToken, updateModule.deleteProfile);
 
 // Upload Routes
 route.post("/upload", verifyToken, uploadModule);
+
+// Preference Routes
+// Category Penyakit
+route.post("/preference/penyakit", verifyToken, preferenceModule.insertPenyakit);
+// Category Food Intolarance
+route.post("/preference/food", verifyToken, "");
+// Category Condition
+route.post("/preference/kondisi", verifyToken, "");
 
 module.exports = route;
