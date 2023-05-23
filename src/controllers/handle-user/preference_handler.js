@@ -1,5 +1,24 @@
 const db = require("../../configs/dbConfig.js");
 
+const getPreference = async (req, res) => {
+  const idUser = req.cookies.id_user;
+  try {
+    const sql = `
+    SELECT u.username , u.no_telepon, u.email, u.foto_user , p.nama_penyakit,p.triger_penyakit FROM users AS u 
+    JOIN user_penyakit AS up ON u.id_user = up.id_user
+    JOIN penyakit AS p ON up.id_penyakit = p.id_penyakit
+    WHERE u.id_user = '${idUser}'
+    `;
+
+    const result = await db.query(sql);
+    return res.json(result[0][0]);
+  } catch (error) {
+    return res.json({
+      status: "error",
+      message: error,
+    });
+  }
+};
 const insertPenyakit = async (req, res) => {
   const id_user = req.cookies.id_user;
   try {
@@ -75,4 +94,5 @@ module.exports = {
   insertPenyakit,
   insertCondition,
   insertFood,
+  getPreference,
 };

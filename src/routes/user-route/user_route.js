@@ -23,6 +23,7 @@ route.delete("/profile/delete", verifyToken, updateModule.deleteProfile);
 route.post("/upload", verifyToken, uploadModule);
 
 // Preference Routes
+route.get("/preference", verifyToken, preferenceModule.getPreference);
 // Category Penyakit
 route.post("/preference/penyakit", verifyToken, preferenceModule.insertPenyakit);
 // Category Food Intolarance
