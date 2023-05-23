@@ -55,7 +55,8 @@ const handlerLogin = async (req, res) => {
       });
     }
     const data = exisct[0][0];
-    const match = bcrypt.compare(password, data.password);
+    const match = await bcrypt.compare(password, data.password);
+
     if (!match) {
       return res.json({
         status: "error",
