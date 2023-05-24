@@ -1,8 +1,8 @@
 const db = require("../configs/db.configs");
 
-const findAll = async () => {
-  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail`;
-  const result = await db.query(query);
+const findAll = async (id_user) => {
+  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ?`;
+  const result = await db.query(query, { replacements: [id_user] });
 
   if (!result) {
     return {
@@ -35,9 +35,9 @@ const findOne = async (id) => {
   };
 };
 
-const findLastScan = async () => {
-  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail ORDER BY id_produk DESC LIMIT 5`;
-  const result = await db.query(query);
+const findLastScan = async (id_user) => {
+  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ? ORDER BY id_produk DESC LIMIT 5`;
+  const result = await db.query(query, { replacements: [id_user] });
 
   if (!result) {
     return {
@@ -52,9 +52,9 @@ const findLastScan = async () => {
   };
 };
 
-const findAllByFavorite = async () => {
-  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE favorite = true`;
-  const result = await db.query(query);
+const findAllByFavorite = async (id_user) => {
+  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE favorite = true AND id_user = ?`;
+  const result = await db.query(query, { replacements: [id_user] });
 
   if (!result) {
     return {
@@ -119,9 +119,9 @@ const deleteOne = async (id) => {
   };
 };
 
-const deleteAll = async () => {
-  const query = `TRUNCATE TABLE produk`;
-  const result = await db.query(query);
+const deleteAll = async (id_user) => {
+  const query = `DELETE FROM produk WHERE id_user = ?`;
+  const result = await db.query(query, { replacements: [id_user] });
 
   if (!result) {
     return {
