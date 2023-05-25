@@ -1,5 +1,21 @@
 const product = require("../services/product.services");
+const uploadImage = require("../helpers/upload-image.helpers");
 const axios = require("axios");
+
+const getScannedProduct = async (req, res) => {
+  const jumlah_scan_produk = req.cookies.jumlah_scan_produk;
+  const id_user = req.cookies.id_user;
+
+  try {
+    const result = await product.findScan(jumlah_scan_produk, id_user);
+    res.status(result.statusCode).json(result);
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: `${error}`,
+    });
+  }
+};
 
 const getAllProduct = async (req, res) => {
   const id_user = req.cookies.id_user;
@@ -9,7 +25,7 @@ const getAllProduct = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -22,7 +38,7 @@ const getDetailProduct = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -36,7 +52,7 @@ const getLastScannedProduct = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -50,28 +66,38 @@ const getFavoriteProduct = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
 
 const uploadProductScan = async (req, res) => {
-  const imageUrl = "https://storage.googleapis.com/image-product-12/16848364527209965986921TsQii6UIlFgeKw0vdPQ0Jw.png";
+  const id_user = req.cookies.id_user;
+  try {
+    const file = req.file;
+    file.originalname = `${Date.now()}${id_user}${file.originalname}`;
 
-  const { data } = await axios.post(
-    "http://localhost:4000/post",
-    { imageUrl: imageUrl },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+    const imageUrl = await uploadImage(file);
 
-  res.json({
-    status: "yea",
-    data: data,
-  });
+    const { data } = await axios.post(
+      "http://localhost:4000/upload",
+      { imageUrl: imageUrl },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const result = await product.create(data.products, id_user);
+    res.cookie("jumlah_scan_produk", data.products.length);
+    res.status(result.statusCode).json(result);
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: `${error}`,
+    });
+  }
 };
 
 const updateProductToFavoriteById = async (req, res) => {
@@ -82,7 +108,7 @@ const updateProductToFavoriteById = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -95,7 +121,7 @@ const deleteProductById = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -109,10 +135,10 @@ const deleteAllProduct = async (req, res) => {
   } catch (error) {
     res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
 
 // module.exports = { getAllProduct, getDetailProduct, getLastScannedProduct, updateProductToFavoriteById, getFavoriteProduct, deleteAllProduct, deleteProductById };
-module.exports = { getAllProduct, getDetailProduct, getFavoriteProduct, getLastScannedProduct, updateProductToFavoriteById, uploadProductScan, deleteAllProduct, deleteProductById };
+module.exports = { getScannedProduct, getAllProduct, getDetailProduct, getFavoriteProduct, getLastScannedProduct, updateProductToFavoriteById, uploadProductScan, deleteAllProduct, deleteProductById };

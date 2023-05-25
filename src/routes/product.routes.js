@@ -3,10 +3,10 @@ const router = express.Router();
 const auth = require("../middlewares/auth.middlewares");
 
 // const { getAllProduct, getDetailProduct, getLastScannedProduct, getFavoriteProduct, updateProductToFavoriteById, deleteProductById, deleteAllProduct } = require("../controllers/product.controllers");
-const { getAllProduct, getDetailProduct, getFavoriteProduct, getLastScannedProduct, updateProductToFavoriteById, uploadProductScan, deleteAllProduct, deleteProductById } = require("../controllers/product.controllers");
+const { getScannedProduct, getAllProduct, getDetailProduct, getFavoriteProduct, getLastScannedProduct, updateProductToFavoriteById, uploadProductScan, deleteAllProduct, deleteProductById } = require("../controllers/product.controllers");
 
 //Route to handler Image product from User and show Result to User
-
+router.get("/scan", auth, getScannedProduct);
 router.get("/all", auth, getAllProduct);
 router.get("/detail/:id", auth, getDetailProduct);
 router.get("/lastScan", auth, getLastScannedProduct);

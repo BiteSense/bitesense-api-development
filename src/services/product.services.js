@@ -1,5 +1,17 @@
 const db = require("../configs/db.configs");
 
+const findScan = async (jumlah_scan_produk, id_user) => {
+  const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ? ORDER BY id_produk DESC LIMIT ${jumlah_scan_produk}`;
+  const result = await db.query(query, { replacements: [id_user] });
+
+  return {
+    statusCode: 200,
+    status: "success",
+    message: "Yeas Baby",
+    data: result[0],
+  };
+};
+
 const findAll = async (id_user) => {
   const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ?`;
   const result = await db.query(query, { replacements: [id_user] });
@@ -69,7 +81,43 @@ const findAllByFavorite = async (id_user) => {
   };
 };
 
-const create = async (product) => {};
+const create = async (products, id_user) => {
+  if (products.length == 0) {
+    return {
+      statusCode: 404,
+      status: "error",
+      message: "Prodcut not Found",
+    };
+  } else {
+    for (let i = 0; i < products.length; i++) {
+      const query = `SELECT id_detail from detail_produk WHERE nama_produk = ?`;
+      const result = await db.query(query, { replacements: [products[i].nama] });
+
+      if (!result[0][0]) {
+        return {
+          statusCode: 404,
+          status: "error",
+          message: "Product Name Incorrect",
+        };
+      }
+      const query1 = `INSERT INTO produk (nama_produk, foto_produk, alert, favorite, id_user, id_detail) VALUES (?,?,?,?,?,?)`;
+      const result1 = await db.query(query1, { replacements: [products[i].nama, products[i].image, null, false, id_user, result[0][0].id_detail] });
+
+      if (!result1) {
+        return {
+          status: "error",
+          message: "Failed to input product",
+        };
+      }
+    }
+  }
+
+  return {
+    statusCode: 201,
+    status: "success",
+    message: "Succes Input Product",
+  };
+};
 
 const updateOne = async (id) => {
   const query = `SELECT favorite from produk WHERE id_produk = ?`;
@@ -137,4 +185,4 @@ const deleteAll = async (id_user) => {
   };
 };
 
-module.exports = { findAll, findOne, findLastScan, findAllByFavorite, create, updateOne, deleteOne, deleteAll };
+module.exports = { findScan, findAll, findOne, findLastScan, findAllByFavorite, create, updateOne, deleteOne, deleteAll };

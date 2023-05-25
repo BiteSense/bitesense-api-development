@@ -118,7 +118,7 @@ const handlerLogout = async (req, res) => {
       });
 
     res.clearCookie("id_user");
-
+    res.clearCookie("jumlah_scan_produk");
     res.clearCookie("token").json({
       status: "success",
       message: "Logout berhasil",
