@@ -1,11 +1,13 @@
 const db = require("../configs/db.configs");
 const uploadImage = require("../helpers/upload-image.helpers");
+const serviceProfile = require("../services/profile.services");
+const serviceUser = require("../services/user.services");
 
 const getDataProfile = async (req, res) => {
   const idUser = req.cookies.id_user;
   try {
-    const sql = `SELECT u.username , u.email , u.no_telepon , u.foto_user FROM users AS u WHERE id_user = '${idUser}'`;
-    const result = await db.query(sql);
+    const result = await serviceProfile.getAllById(idUser);
+    console.log(result);
     if (!result)
       return res.json({
         status: "error",
@@ -15,7 +17,7 @@ const getDataProfile = async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "get data success",
-      data: result[0][0],
+      data: result,
     });
   } catch (error) {
     return res.json({
@@ -28,17 +30,12 @@ const updateEmail = async (req, res) => {
   const { email } = req.body;
   const id_user = req.cookies.id_user;
   try {
-    const sql = `SELECT * FROM users WHERE email = '${email}'`;
-    const result = await db.query(sql);
-    if (result[0][0])
+    if (!(await serviceUser.checkEmail(email)))
       return res.json({
         status: "error",
         message: "Email sudah digunakan oleh akun lain",
       });
-
-    const sql1 = `UPDATE users SET email = '${email}' WHERE id_user = '${id_user}'`;
-    const result1 = await db.query(sql1);
-    if (!result1)
+    if (!(await serviceProfile.updateEmail(id_user, email)))
       return res.json({
         status: "error",
         message: "gagal mengganti email",
@@ -59,17 +56,13 @@ const updateTelepon = async (req, res) => {
   const { telepon } = req.body;
   const id_user = req.cookies.id_user;
   try {
-    const sql = `SELECT * FROM users WHERE no_telepon = '${telepon}'`;
-    const result = await db.query(sql);
-    if (result[0][0])
+    if (await serviceProfile.getAllByTelepon(telepon))
       return res.json({
         status: "error",
         message: "Nomor Telepon sudah digunakan oleh akun lain",
       });
 
-    const sql1 = `UPDATE users SET no_telepon = '${telepon}' WHERE id_user = '${id_user}'`;
-    const result1 = await db.query(sql1);
-    if (!result1)
+    if (!(await serviceProfile.updateTelepon(id_user, telepon)))
       return res.json({
         status: "error",
         message: "gagal mengganti nomor telepon",
@@ -90,17 +83,13 @@ const updateUsername = async (req, res) => {
   const { username } = req.body;
   const id_user = req.cookies.id_user;
   try {
-    const sql = `SELECT * FROM users WHERE username = '${username}'`;
-    const result = await db.query(sql);
-    if (result[0][0])
+    if (await serviceProfile.getAllByUsername(username))
       return res.json({
         status: "error",
         message: "Username sudah digunakan oleh akun lain",
       });
 
-    const sql1 = `UPDATE users SET username = '${username}' WHERE id_user = '${id_user}'`;
-    const result1 = await db.query(sql1);
-    if (!result1)
+    if (!(await serviceProfile.updateUsername(id_user, username)))
       return res.json({
         status: "error",
         message: "gagal mengganti username",
