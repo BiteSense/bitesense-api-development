@@ -1,4 +1,4 @@
-const db = require("../../configs/dbConfig.js");
+const db = require("../configs/db.configs");
 const Sequelize = require("sequelize");
 // const convertToArray = require("../../helper/convertToArray.js");
 

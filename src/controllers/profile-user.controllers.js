@@ -1,5 +1,5 @@
-const db = require("../../configs/dbConfig");
-const uploadImage = require("../../helper/uploadImage.js");
+const db = require("../configs/db.configs");
+const uploadImage = require("../helpers/upload-image.helpers");
 
 const getDataProfile = async (req, res) => {
   const idUser = req.cookies.id_user;

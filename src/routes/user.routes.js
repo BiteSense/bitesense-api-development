@@ -1,10 +1,10 @@
 const express = require("express");
 const route = express.Router();
-const verifyToken = require("../../middleware/verifyToken");
-const myModule = require("../../controllers/handle-user/user_handler.js");
-const updateModule = require("../../controllers/handle-user/profile_handler.js");
-const uploadModule = require("../../controllers/handle-user/upload_handler.js");
-const preferenceModule = require("../../controllers/handle-user/preference_handler.js");
+const verifyToken = require("../middlewares/auth.middlewares");
+const myModule = require("../controllers/user.controllers");
+const updateModule = require("../controllers/profile-user.controllers");
+const uploadModule = require("../controllers/upload.controllers");
+const preferenceModule = require("../controllers/preference.controllers");
 
 // User Routes
 route.post("/register", myModule.handlerRegister);
@@ -18,7 +18,6 @@ route.post("/profile/telepon", verifyToken, updateModule.updateTelepon);
 route.post("/profile/username", verifyToken, updateModule.updateUsername);
 route.post("/profile/upload", verifyToken, updateModule.updateProfile);
 route.delete("/profile/delete", verifyToken, updateModule.deleteProfile);
-
 // Upload Routes
 route.post("/upload", verifyToken, uploadModule);
 

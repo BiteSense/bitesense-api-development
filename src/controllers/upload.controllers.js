@@ -1,4 +1,4 @@
-const uploadImage = require("../../helper/uploadImage.js");
+const uploadImage = require("../helpers/upload-image.helpers");
 
 const imageUploadUser = async (req, res, next) => {
   const id_user = req.cookies.id_user;

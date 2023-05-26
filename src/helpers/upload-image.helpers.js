@@ -1,4 +1,4 @@
-const googlCloud = require("../configs/storage.js");
+const googlCloud = require("../configs/cloud-storage.configs");
 const util = require("util");
 const bucketName = "staging_product";
 

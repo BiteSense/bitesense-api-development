@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const db = require("../../configs/dbConfig");
+const db = require("../configs/db.configs");
 const jwt = require("jsonwebtoken");
 
 const handlerRegister = async (req, res) => {
