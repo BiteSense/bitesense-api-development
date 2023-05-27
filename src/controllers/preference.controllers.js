@@ -1,33 +1,45 @@
 const db = require("../configs/db.configs");
-const Sequelize = require("sequelize");
-// const convertToArray = require("../../helper/convertToArray.js");
+const service = require("../services/preference.services");
 
 const getPreference = async (req, res) => {
   const idUser = req.cookies.id_user;
   try {
-    const sql = `
-    SELECT p.nama_penyakit FROM users AS u 
-    JOIN user_penyakit AS up ON u.id_user = up.id_user
-    JOIN penyakit AS p ON up.id_penyakit = p.id_penyakit
-    JOIN user_food AS uf ON u.id_user = uf.id_user
-    JOIN food AS f ON uf.id_food = f.id_food
-    JOIN user_condition AS uc ON u.id_user = uc.id_user
-    JOIN kondisi c ON uc.id_condition = c.id_condition
-    WHERE u.id_user = '${idUser}'
-    `;
-    await db.query(sql, { type: Sequelize.QueryTypes.SELECT }).then((result) => {
-      return res.status(200).json({
-        status: "success",
-        message: "success getAll preference",
-        data: {
-          result,
-        },
-      });
+    const dataPenyakit = await service.getAllPenyakit(idUser);
+    const dataKondisi = await service.getAllKondisi(idUser);
+    const dataFood = await service.getAllFood(idUser);
+    return res.json({
+      data: {
+        dataPenyakit,
+        dataKondisi,
+        dataFood,
+      },
     });
   } catch (error) {
     return res.json({
       status: "error",
       message: error,
+    });
+  }
+};
+const getDataPreference = async (req, res) => {
+  try {
+    const dataFood = await service.getDataFood();
+    const dataKondisi = await service.getDataKondisi();
+    const dataPenyakit = await service.getDataPenyakit();
+
+    return res.json({
+      status: "success",
+      message: "success get data preference",
+      data: {
+        dataFood,
+        dataKondisi,
+        dataPenyakit,
+      },
+    });
+  } catch (error) {
+    return res.json({
+      status: "error",
+      message: `${error}`,
     });
   }
 };
@@ -107,4 +119,5 @@ module.exports = {
   insertCondition,
   insertFood,
   getPreference,
+  getDataPreference,
 };

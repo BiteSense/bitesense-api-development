@@ -2,6 +2,7 @@ const db = require("../configs/db.configs");
 const uploadImage = require("../helpers/upload-image.helpers");
 const serviceProfile = require("../services/profile.services");
 const serviceUser = require("../services/user.services");
+const getPreferenceData = require("./preference.controllers");
 
 const getDataProfile = async (req, res) => {
   const idUser = req.cookies.id_user;
@@ -17,7 +18,9 @@ const getDataProfile = async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "get data success",
-      data: result,
+      data: {
+        result,
+      },
     });
   } catch (error) {
     return res.json({

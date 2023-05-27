@@ -23,6 +23,8 @@ route.post("/upload", verifyToken, uploadModule);
 
 // Preference Routes
 route.get("/preference", verifyToken, preferenceModule.getPreference);
+// Preference Data
+route.get("/preference/data", verifyToken, preferenceModule.getDataPreference);
 // Category Penyakit
 route.post("/preference/penyakit", verifyToken, preferenceModule.insertPenyakit);
 // Category Food Intolarance
