@@ -3,7 +3,6 @@ const route = express.Router();
 const verifyToken = require("../middlewares/auth.middlewares");
 const myModule = require("../controllers/user.controllers");
 const updateModule = require("../controllers/profile-user.controllers");
-const uploadModule = require("../controllers/upload.controllers");
 const preferenceModule = require("../controllers/preference.controllers");
 
 // User Routes
@@ -18,8 +17,6 @@ route.post("/profile/telepon", verifyToken, updateModule.updateTelepon);
 route.post("/profile/username", verifyToken, updateModule.updateUsername);
 route.post("/profile/upload", verifyToken, updateModule.updateProfile);
 route.delete("/profile/delete", verifyToken, updateModule.deleteProfile);
-// Upload Routes
-route.post("/upload", verifyToken, uploadModule);
 
 // Preference Routes
 route.get("/preference", verifyToken, preferenceModule.getPreference);
