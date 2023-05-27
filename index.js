@@ -1,11 +1,13 @@
 const express = require("express");
 const db = require("./src/configs/db.configs");
-const route = require("./src/routes/user.routes");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const env = require("dotenv");
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+const userRoutes = require("./src/routes/user.routes.js");
+const productRoutes = require("./src/routes/product.routes.js");
 
 const app = express();
 env.config();
@@ -24,14 +26,16 @@ try {
 } catch (error) {
   console.log(error);
 }
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multerMid.single("file"));
 app.use(cookieParser());
+app.use(multerMid.single("file"));
 
 // Handling route
-app.use("/api/user", route);
+app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
