@@ -8,12 +8,19 @@ const imageUploadUser = async (req, res, next) => {
     const publicUrl = await uploadImage(file);
 
     return res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "Upload Success",
-      imgUrl: publicUrl,
+      data: {
+        publicUrl,
+      },
     });
   } catch (error) {
     next(error);
+    return res.json({
+      status: "error",
+      message: `${error}`,
+    });
   }
 };
 

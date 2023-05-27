@@ -6,14 +6,14 @@ const handlerRegister = async (req, res) => {
   const { username, email, password, repassword } = req.body;
   //Checking password
   if (password != repassword) {
-    return res.json({
+    return res.status(400).json({
       status: "error",
       message: "Password and Repassword different",
     });
   }
   //Checking Already email
   if ((await service.checkEmail(email)) === false) {
-    return res.json({
+    return res.status(400).json({
       status: "error",
       message: "Email Already Exicst",
     });
@@ -25,11 +25,15 @@ const handlerRegister = async (req, res) => {
   try {
     service.registerUser(username, email, hashPassword);
     return res.status(200).json({
-      code: 200,
+      statusCode: 200,
       status: "success",
+      message: "success register",
     });
   } catch (error) {
-    return res.json(error);
+    return res.json({
+      status: "error",
+      message: `${error}`,
+    });
   }
 };
 const handlerLogin = async (req, res) => {
@@ -37,7 +41,7 @@ const handlerLogin = async (req, res) => {
   try {
     // Check Email
     if (await service.checkEmail(email)) {
-      return res.json({
+      return res.status(400).json({
         status: "error",
         message: "Email belum pernah didaftarkan",
       });
@@ -46,7 +50,7 @@ const handlerLogin = async (req, res) => {
     const match = await bcrypt.compare(password, data.password);
 
     if (!match) {
-      return res.json({
+      return res.status(400).json({
         status: "error",
         message: "Email or Password salah",
       });
@@ -57,19 +61,22 @@ const handlerLogin = async (req, res) => {
       expiresIn: "1d",
     });
 
-    if (!(await service.updateUserToken(token, userid))) {
-      return res.json({
-        status: "error",
-      });
-    }
+    await service.updateUserToken(token, userid);
     res.cookie("token", token);
     res.cookie("id_user", userid);
 
-    res.send({ token });
+    res.status(200).json({
+      statusCode: 200,
+      status: "success",
+      message: "success login",
+      data: {
+        token,
+      },
+    });
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -82,28 +89,26 @@ const handlerLogout = async (req, res) => {
         message: "Unauthorize",
       });
 
-    const data = await service.getAllByToken;
+    const data = await service.getAllByToken(token);
     if (!data)
       return res.status(204).json({
         status: "error",
         message: "Unauthorize",
       });
-    if (!service.clearToken(data.id_user))
-      return res.json({
-        status: "error",
-        message: "Gagal Logout",
-      });
+    await service.clearToken(data.id_user);
 
     res.clearCookie("id_user");
 
-    res.clearCookie("token").json({
+    res.clearCookie("token");
+    res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "Logout berhasil",
     });
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };

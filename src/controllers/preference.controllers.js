@@ -7,7 +7,10 @@ const getPreference = async (req, res) => {
     const dataPenyakit = await service.getAllPenyakit(idUser);
     const dataKondisi = await service.getAllKondisi(idUser);
     const dataFood = await service.getAllFood(idUser);
-    return res.json({
+    return res.status(200).json({
+      statusCode: 200,
+      status: "success",
+      message: "success get data",
       data: {
         dataPenyakit,
         dataKondisi,
@@ -17,7 +20,7 @@ const getPreference = async (req, res) => {
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -27,7 +30,8 @@ const getDataPreference = async (req, res) => {
     const dataKondisi = await service.getDataKondisi();
     const dataPenyakit = await service.getDataPenyakit();
 
-    return res.json({
+    return res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "success get data preference",
       data: {
@@ -48,22 +52,17 @@ const insertPenyakit = async (req, res) => {
   try {
     const { penyakit } = req.body;
     sql = `INSERT INTO user_penyakit (id_user , id_penyakit) VALUES ('${id_user}','${penyakit}')`;
-    const result = await db.query(sql);
-    console.log(result);
-    if (!result)
-      return res.json({
-        status: "error",
-        message: "failed input data",
-      });
+    await db.query(sql);
 
     return res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "success input data",
     });
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -72,21 +71,17 @@ const insertFood = async (req, res) => {
   try {
     const { makanan } = req.body;
     sql = `INSERT INTO user_food (id_user , id_food) VALUES ('${id_user}','${makanan}')`;
-    const result = await db.query(sql);
-    if (!result)
-      return res.json({
-        status: "error",
-        message: "failed input data",
-      });
+    await db.query(sql);
 
     return res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "success input data",
     });
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
@@ -95,21 +90,17 @@ const insertCondition = async (req, res) => {
   try {
     const { kondisi } = req.body;
     sql = `INSERT INTO user_condition (id_user , id_condition) VALUES ('${id_user}','${kondisi}')`;
-    const result = await db.query(sql);
-    if (!result)
-      return res.json({
-        status: "error",
-        message: "failed input data",
-      });
+    await db.query(sql);
 
     return res.status(200).json({
+      statusCode: 200,
       status: "success",
       message: "success input data",
     });
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };

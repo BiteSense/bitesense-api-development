@@ -4,7 +4,7 @@ const verifyToken = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     if (!token)
-      return res.status(400).json({
+      return res.status(401).json({
         status: "error",
         message: "Unauthorized",
       });
@@ -21,7 +21,7 @@ const verifyToken = async (req, res, next) => {
   } catch (error) {
     return res.json({
       status: "error",
-      message: error,
+      message: `${error}`,
     });
   }
 };
