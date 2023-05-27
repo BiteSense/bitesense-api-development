@@ -4,10 +4,17 @@ const findScan = async (jumlah_scan_produk, id_user) => {
   const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ? ORDER BY id_produk DESC LIMIT ${jumlah_scan_produk}`;
   const result = await db.query(query, { replacements: [id_user] });
 
+  if (!result[0]) {
+    return {
+      status: "error",
+      message: "Get Data Product Scanned Failed",
+    };
+  }
+
   return {
     statusCode: 200,
     status: "success",
-    message: "Yeas Baby",
+    message: "Successfull Get Data Product Scanned",
     data: result[0],
   };
 };
@@ -16,15 +23,16 @@ const findAll = async (id_user) => {
   const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ?`;
   const result = await db.query(query, { replacements: [id_user] });
 
-  if (!result) {
+  if (!result[0]) {
     return {
       status: "error",
-      message: "get data failed",
+      message: "Get Data All Product Failed",
     };
   }
   return {
     statusCode: 200,
     status: "success",
+    message: "Successfull Get Data All Product",
     data: result[0],
   };
 };
@@ -40,9 +48,11 @@ const findOne = async (id) => {
       message: "Product Not Found",
     };
   }
+
   return {
     statusCode: 200,
     status: "success",
+    message: "Successfull Get Data Product",
     data: result[0][0],
   };
 };
@@ -51,15 +61,17 @@ const findLastScan = async (id_user) => {
   const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE id_user = ? ORDER BY id_produk DESC LIMIT 5`;
   const result = await db.query(query, { replacements: [id_user] });
 
-  if (!result) {
+  if (!result[0]) {
     return {
       status: "error",
-      message: "get data failed",
+      message: "Get Data Product LastScanned Failed",
     };
   }
+
   return {
     statusCode: 200,
     status: "success",
+    message: "Successfull Get Data Product LastScanned",
     data: result[0],
   };
 };
@@ -68,15 +80,16 @@ const findAllByFavorite = async (id_user) => {
   const query = `SELECT * FROM produk LEFT JOIN detail_produk ON produk.id_detail = detail_produk.id_detail WHERE favorite = true AND id_user = ?`;
   const result = await db.query(query, { replacements: [id_user] });
 
-  if (!result) {
+  if (!result[0]) {
     return {
       status: "error",
-      message: "get data failed",
+      message: "Get Data Product Favorite Failed",
     };
   }
   return {
     statusCode: 200,
     status: "success",
+    message: "Successfull Get Data Product Favorite",
     data: result[0],
   };
 };
@@ -142,6 +155,7 @@ const updateOne = async (id) => {
       message: "Product failed to update",
     };
   }
+
   return {
     statusCode: 202,
     status: "success",

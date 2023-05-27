@@ -1,6 +1,6 @@
+const axios = require("axios");
 const product = require("../services/product.services");
 const uploadImage = require("../helpers/upload-image.helpers");
-const axios = require("axios");
 
 const getScannedProduct = async (req, res) => {
   const jumlah_scan_produk = req.cookies.jumlah_scan_produk;
@@ -19,6 +19,7 @@ const getScannedProduct = async (req, res) => {
 
 const getAllProduct = async (req, res) => {
   const id_user = req.cookies.id_user;
+
   try {
     const result = await product.findAll(id_user);
     res.status(result.statusCode).json(result);
@@ -32,6 +33,7 @@ const getAllProduct = async (req, res) => {
 
 const getDetailProduct = async (req, res) => {
   const id = req.params.id;
+
   try {
     const result = await product.findOne(id);
     res.status(result.statusCode).json(result);
@@ -73,6 +75,7 @@ const getFavoriteProduct = async (req, res) => {
 
 const uploadProductScan = async (req, res) => {
   const id_user = req.cookies.id_user;
+
   try {
     const file = req.file;
     file.originalname = `${Date.now()}${id_user}${file.originalname}`;
@@ -102,6 +105,7 @@ const uploadProductScan = async (req, res) => {
 
 const updateProductToFavoriteById = async (req, res) => {
   const id = req.params.id;
+
   try {
     const result = await product.updateOne(id);
     res.status(result.statusCode).json(result);
@@ -115,6 +119,7 @@ const updateProductToFavoriteById = async (req, res) => {
 
 const deleteProductById = async (req, res) => {
   const id = req.params.id;
+
   try {
     const result = await product.deleteOne(id);
     res.status(result.statusCode).json(result);
@@ -140,5 +145,4 @@ const deleteAllProduct = async (req, res) => {
   }
 };
 
-// module.exports = { getAllProduct, getDetailProduct, getLastScannedProduct, updateProductToFavoriteById, getFavoriteProduct, deleteAllProduct, deleteProductById };
 module.exports = { getScannedProduct, getAllProduct, getDetailProduct, getFavoriteProduct, getLastScannedProduct, updateProductToFavoriteById, uploadProductScan, deleteAllProduct, deleteProductById };
