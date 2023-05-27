@@ -1,5 +1,6 @@
 const googlCloud = require("../configs/cloud-storage.configs");
 const util = require("util");
+
 const bucketName = "image-product-12";
 
 const bucket = googlCloud.bucket(bucketName);
@@ -9,10 +10,8 @@ const { format } = util;
 const uploadImage = (file) =>
   new Promise((resolve, reject) => {
     const { originalname, buffer } = file;
-    const blob = bucket.file(originalname.replaceAll(" ", "_"));
-    // const blob = bucket.file(originalname.replace(/\s/g, "_"));
-    // const blob = bucket.file(originalname.replace(/ /g, "_"));
-    // const blob = bucket.file(originalname.replace(/ +/g, "_"));
+    const blob = bucket.file(originalname.replace(/ /g, "_"));
+    
     const blobStream = blob.createWriteStream({
       resumable: false,
     });
