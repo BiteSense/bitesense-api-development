@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const db = new Sequelize("production_bitesense", "root", "", {
+const db = new Sequelize("bitesense", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });

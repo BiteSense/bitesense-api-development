@@ -46,7 +46,7 @@ const handlerLogin = async (req, res) => {
       return res.status(400).json({
         statusCode: 400,
         status: "error",
-        message: "Email not Regitered",
+        message: "Email not Register",
       });
     }
     const data = await service.getAllByEmail(email);

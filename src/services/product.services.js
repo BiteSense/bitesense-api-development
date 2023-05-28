@@ -99,7 +99,7 @@ const create = async (products, id_user) => {
     return {
       statusCode: 404,
       status: "error",
-      message: "Prodcut not Found",
+      message: "Product not Found",
     };
   } else {
     for (let i = 0; i < products.length; i++) {
