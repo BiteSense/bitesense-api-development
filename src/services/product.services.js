@@ -14,7 +14,7 @@ const findScan = async (jumlah_scan_produk, id_user) => {
   return {
     statusCode: 200,
     status: "success",
-    message: "Successfull Get Data Product Scanned",
+    message: "Success Get Data Product Scanned",
     data: result[0],
   };
 };
@@ -32,7 +32,7 @@ const findAll = async (id_user) => {
   return {
     statusCode: 200,
     status: "success",
-    message: "Successfull Get Data All Product",
+    message: "Success Get Data All Product",
     data: result[0],
   };
 };
@@ -52,7 +52,7 @@ const findOne = async (id) => {
   return {
     statusCode: 200,
     status: "success",
-    message: "Successfull Get Data Product",
+    message: "Success Get Data Product",
     data: result[0][0],
   };
 };
@@ -71,7 +71,7 @@ const findLastScan = async (id_user) => {
   return {
     statusCode: 200,
     status: "success",
-    message: "Successfull Get Data Product LastScanned",
+    message: "Success Get Data Product LastScanned",
     data: result[0],
   };
 };
@@ -89,7 +89,7 @@ const findAllByFavorite = async (id_user) => {
   return {
     statusCode: 200,
     status: "success",
-    message: "Successfull Get Data Product Favorite",
+    message: "Success Get Data Product Favorite",
     data: result[0],
   };
 };
@@ -119,7 +119,7 @@ const create = async (products, id_user) => {
       if (!result1) {
         return {
           status: "error",
-          message: "Failed to input product",
+          message: "Failed to Input Product",
         };
       }
     }
@@ -152,14 +152,14 @@ const updateOne = async (id) => {
     return {
       statusCode: 403,
       status: "error",
-      message: "Product failed to update",
+      message: "Product Failed to Update",
     };
   }
 
   return {
     statusCode: 202,
     status: "success",
-    message: "Product has been updated",
+    message: "Product has been Updated",
   };
 };
 
@@ -170,14 +170,14 @@ const deleteOne = async (id) => {
   if (!result) {
     return {
       status: "error",
-      message: "Failed to delete Product",
+      message: "Failed to Delete Product",
     };
   }
 
   return {
     statusCode: 202,
     status: "success",
-    message: "Product has been deleted",
+    message: "Product has been Deleted",
   };
 };
 
@@ -188,14 +188,14 @@ const deleteAll = async (id_user) => {
   if (!result) {
     return {
       status: "error",
-      message: "Failed to delete All Product",
+      message: "Failed to Delete All Product",
     };
   }
 
   return {
     statusCode: 202,
     status: "success",
-    message: "All Product has been deleted",
+    message: "All Product has been Deleted",
   };
 };
 

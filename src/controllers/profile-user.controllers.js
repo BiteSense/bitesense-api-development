@@ -10,14 +10,15 @@ const getDataProfile = async (req, res) => {
     console.log(result);
     if (!result)
       return res.json({
+        statusCode: 400,
         status: "error",
-        message: "get data failed",
+        message: "Get Data User Failed",
       });
 
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "get data success",
+      message: "Success Get Data User",
       data: {
         result,
       },
@@ -35,19 +36,21 @@ const updateEmail = async (req, res) => {
   try {
     if (!(await serviceUser.checkEmail(email)))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "Email sudah digunakan oleh akun lain",
+        message: "Email Already Excist",
       });
     if (!(await serviceProfile.updateEmail(id_user, email)))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "gagal mengganti email",
+        message: "Update Email User Failed",
       });
 
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "berhasil mengubah email",
+      message: "Success Update Email User",
     });
   } catch (error) {
     return res.json({
@@ -62,20 +65,22 @@ const updateTelepon = async (req, res) => {
   try {
     if (await serviceProfile.getAllByTelepon(telepon))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "Nomor Telepon sudah digunakan oleh akun lain",
+        message: "Phone Number Already Excist",
       });
 
     if (!(await serviceProfile.updateTelepon(id_user, telepon)))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "gagal mengganti nomor telepon",
+        message: "Update Phone Number Failed",
       });
 
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "berhasil mengubah nomor telepon",
+      message: "Success Update Phone Number",
     });
   } catch (error) {
     return res.json({
@@ -90,20 +95,22 @@ const updateUsername = async (req, res) => {
   try {
     if (await serviceProfile.getAllByUsername(username))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "Username sudah digunakan oleh akun lain",
+        message: "Username Already Excist",
       });
 
     if (!(await serviceProfile.updateUsername(id_user, username)))
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "gagal mengganti username",
+        message: "Update Username Failed",
       });
 
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "berhasil mengubah username",
+      message: "Success Update Username",
     });
   } catch (error) {
     return res.json({
@@ -124,7 +131,7 @@ const updateProfile = async (req, res, next) => {
     res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success upload image",
+      message: "Success Upload Profile Image",
       data: {
         publicUrl,
       },
@@ -147,7 +154,7 @@ const deleteProfile = async (req, res, next) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "succes delete profile",
+      message: "Succes Delete Profile Image",
     });
   } catch (error) {
     next(error);

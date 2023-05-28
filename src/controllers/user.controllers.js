@@ -7,15 +7,17 @@ const handlerRegister = async (req, res) => {
   //Checking password
   if (password != repassword) {
     return res.status(400).json({
+      statusCode: 400,
       status: "error",
-      message: "Password and Repassword different",
+      message: "Password and Repassword Different",
     });
   }
   //Checking Already email
   if ((await service.checkEmail(email)) === false) {
     return res.status(400).json({
+      statusCode: 400,
       status: "error",
-      message: "Email Already Exicst",
+      message: "Email Already Excist",
     });
   }
   //Enkrip Password
@@ -27,7 +29,7 @@ const handlerRegister = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success register",
+      message: "Success Register",
     });
   } catch (error) {
     return res.json({
@@ -42,8 +44,9 @@ const handlerLogin = async (req, res) => {
     // Check Email
     if (await service.checkEmail(email)) {
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "Email belum pernah didaftarkan",
+        message: "Email not Regitered",
       });
     }
     const data = await service.getAllByEmail(email);
@@ -51,8 +54,9 @@ const handlerLogin = async (req, res) => {
 
     if (!match) {
       return res.status(400).json({
+        statusCode: 400,
         status: "error",
-        message: "Email or Password salah",
+        message: "Email or Password Incorrect",
       });
     }
 
@@ -68,7 +72,7 @@ const handlerLogin = async (req, res) => {
     res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success login",
+      message: "Success Login",
       data: {
         token,
       },
@@ -85,6 +89,7 @@ const handlerLogout = async (req, res) => {
     const token = req.cookies.token;
     if (!token)
       return res.status(204).json({
+        statusCode: 204,
         status: "error",
         message: "Unauthorize",
       });
@@ -92,18 +97,20 @@ const handlerLogout = async (req, res) => {
     const data = await service.getAllByToken(token);
     if (!data)
       return res.status(204).json({
+        status: 204,
         status: "error",
         message: "Unauthorize",
       });
     await service.clearToken(data.id_user);
 
     res.clearCookie("id_user");
+    res.clearCookie("jumlah_scan_produk");
 
     res.clearCookie("token");
     res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "Logout berhasil",
+      message: "Success Logout",
     });
   } catch (error) {
     return res.json({

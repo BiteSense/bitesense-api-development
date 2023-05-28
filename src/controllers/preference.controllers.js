@@ -10,7 +10,7 @@ const getPreference = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success get data",
+      message: "Success Get Data Preference User",
       data: {
         dataPenyakit,
         dataKondisi,
@@ -33,7 +33,7 @@ const getDataPreference = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success get data preference",
+      message: "Success Get All Data Preference",
       data: {
         dataFood,
         dataKondisi,
@@ -57,7 +57,7 @@ const insertPenyakit = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success input data",
+      message: "Success Input Data Preference User",
     });
   } catch (error) {
     return res.json({
@@ -76,7 +76,7 @@ const insertFood = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success input data",
+      message: "Success Input Data Preference User",
     });
   } catch (error) {
     return res.json({
@@ -95,7 +95,7 @@ const insertCondition = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       status: "success",
-      message: "success input data",
+      message: "Success Input Data Preference User",
     });
   } catch (error) {
     return res.json({
