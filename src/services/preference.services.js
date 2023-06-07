@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 const db = require("../configs/db.configs");
 
 const getAllPenyakit = async (idUser) => {
